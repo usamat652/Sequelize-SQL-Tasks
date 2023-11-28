@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from "../config/connectDB.js";
 
- const Product = sequelize.define('Product', {
+const Product = sequelize.define('Product', {
   productCode: {
     type: DataTypes.STRING(15),
     primaryKey: true,
@@ -31,12 +31,13 @@ import { sequelize } from "../config/connectDB.js";
   MSRP: {
     type: DataTypes.DECIMAL(10, 2),
   },
-},{
+}, 
+{
   timestamps: false
 },
-{
-    tableName: 'products', 
+  {
+    tableName: 'products',
     timestamps: true
   });
 
-export  {Product};
+export { Product };

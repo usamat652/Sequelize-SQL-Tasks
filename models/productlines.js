@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/connectDB.js";
-import { Product } from "./products.js";
  const ProductLine = sequelize.define('ProductLine', {
   productLine: {
     type: DataTypes.STRING(50),
@@ -19,12 +18,7 @@ import { Product } from "./products.js";
   timestamps: false
 },
 {
-    // Additional model options as needed
-    tableName: 'productlines', // Set the table name if different from the model name
+    tableName: 'productlines', 
   });
-
-//ProductLine.hasMany(Product, { foreignKey: 'productLine' });
-// Sync the model with the database (create the table if it doesn't exist)
-//sequelize.sync();
 
 export  {ProductLine};

@@ -48,10 +48,7 @@ const Customer = sequelize.define('Customer', {
   timestamps: false
 }, {
   // Additional model options as needed
-  tableName: 'customers', // Set the table name if different from the model name
+  tableName: 'customers', 
 });
-
-// Sync the model with the database (create the table if it doesn't exist)
-//sequelize.sync();
 
 export { Customer };

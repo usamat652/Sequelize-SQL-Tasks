@@ -25,9 +25,7 @@ import { sequelize } from '../config/connectDB.js';
   timestamps: false
 },
 {
-  // Additional model options as needed
-  tableName: 'orderdetails', // Set the table name if different from the model name
+  tableName: 'orderdetails', 
 });
-
 
 export  {OrderDetail};

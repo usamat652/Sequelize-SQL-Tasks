@@ -34,10 +34,7 @@ import { sequelize } from '../config/connectDB.js';
 },{
   timestamps: false
 }, {
-  // Additional model options as needed
-  tableName: 'offices', // Set the table name if different from the model name
+  tableName: 'offices', 
 });
-
-//sequelize.sync();
 
 export  {Office};

@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/connectDB.js'; // Assuming this is the file where the Customer model is defined
+import { sequelize } from '../config/connectDB.js'; 
 
 
  const Payment = sequelize.define('Payment', {
@@ -21,8 +21,7 @@ import { sequelize } from '../config/connectDB.js'; // Assuming this is the file
   timestamps: false
 },
  {
-  // Additional model options as needed
-  tableName: 'payments', // Set the table name if different from the model name
+  tableName: 'payments', 
 });
 
 

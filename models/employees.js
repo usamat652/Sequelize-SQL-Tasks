@@ -31,8 +31,7 @@ import { sequelize } from '../config/connectDB.js';
   timestamps: false
 },
 {
-  // Additional model options as needed
-  tableName: 'employees', // Set the table name if different from the model name
+  tableName: 'employees', 
 });
 
 

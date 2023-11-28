@@ -25,7 +25,7 @@ import { sequelize } from '../config/connectDB.js';
   timestamps: false
 },
 {
-  tableName: 'orders', // Set the table name if different from the model name
+  tableName: 'orders', 
 });
 
 
