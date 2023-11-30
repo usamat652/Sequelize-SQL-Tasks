@@ -5,26 +5,23 @@ import { dirname, resolve } from 'path';
 
 async function mergePDFs(req, res) {
   try {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
+    const filename = fileURLToPath(import.meta.url);
+    const _dirname = dirname(filename);
 
-    const pdf1Path = resolve(__dirname, '../uploads/customer_details_333.pdf');
-    const pdf2Path = resolve(__dirname, '../uploads/customer_details_334.pdf');
-    const outputPath = resolve(__dirname, '../uploads/mergedFile.pdf');
+    const pdf1Path = resolve(_dirname, '../uploads/customer_details_119.pdf');
+    const pdf2Path = resolve(_dirname, '../uploads/customer_details_334.pdf');
+    const outputPath = resolve(_dirname, '../uploads/mergedFile.pdf');
 
     // Check if files exist
-    await Promise.all([
-      access(pdf1Path),
-      access(pdf2Path),
-    ]);
+    await Promise.all([access(pdf1Path), access(pdf2Path)]);
 
     // Read the PDF files
-    const pdf1Bytes = await readFile(pdf1Path);
-    const pdf2Bytes = await readFile(pdf2Path);
+    const pdf1Read = await readFile(pdf1Path);
+    const pdf2Read = await readFile(pdf2Path);
 
     // Create PDFDocument objects
-    const pdfDoc1 = await PDFDocument.load(pdf1Bytes);
-    const pdfDoc2 = await PDFDocument.load(pdf2Bytes);
+    const pdfDoc1 = await PDFDocument.load(pdf1Read);
+    const pdfDoc2 = await PDFDocument.load(pdf2Read);
 
     // Create a new PDF document for merging
     const mergedPdfDoc = await PDFDocument.create();
@@ -39,17 +36,20 @@ async function mergePDFs(req, res) {
     pdf1Pages.forEach((page) => mergedPdfDoc.addPage(page));
     pdf2Pages.forEach((page) => mergedPdfDoc.addPage(page));
 
-    // Save the merged PDF to a file on the server
-    await writeFile(outputPath, await mergedPdfDoc.save());
+    // Convert the merged PDF to base64
+    const mergedPdfBase64 = await mergedPdfDoc.saveAsBase64();
 
     // Set response headers
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline; filename=merged.pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=merged.pdf');
 
     // Send the merged PDF as the response
-    res.send(await mergedPdfDoc.save());
+    res.status(200).send(Buffer.from(mergedPdfBase64, 'base64'));
 
+    // Save the merged PDF to a file on the server
+    await writeFile(outputPath, await mergedPdfDoc.save());
     console.log('PDFs merged successfully. Merged file saved to:', outputPath);
+
   } catch (error) {
     console.error('Error merging PDFs:', error.message);
     res.status(500).send('Internal Server Error - Error merging files');

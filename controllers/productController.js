@@ -2,21 +2,21 @@ import { Op } from 'sequelize';
 import { Product } from '../models/products.js';
 import { createObjectCsvWriter } from 'csv-writer';
 import { v4 as uuidv4 } from 'uuid';
-// import fs from 'fs';
-// import path from 'path';
+import fs from 'fs/promises';
+import { resolve } from 'path';
 
 const getProducts = async function (req, res) {
   try {
-    // Fetch products with buyPrice greater than 60.00
     const products = await Product.findAll({
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      attributes: {
+        exclude: ['orderNumber'], 
+      },
       where: {
         buyPrice: {
-          [Op.gt]: 60.00,
+          [Op.gt]: 30.00,
         },
       },
     });
-
     // Generate a unique filename for the CSV
     const filename = `uploads/products_${uuidv4()}.csv`;
 
@@ -47,4 +47,36 @@ const getProducts = async function (req, res) {
 };
 
 
-export { getProducts };
+const deleteFile = async(req, res)=>{
+  try {
+    const { uuid } = req.query;
+
+    if (!uuid) {
+      return res.status(400).json({ error: 'Filename parameter is required' });
+    }
+    // Use import.meta.url to get the module URL and then resolve its dirname
+    // const currentModulePath = new URL(import.meta.url).pathname;
+    // const currentModuleDir = dirname(currentModulePath);
+    
+    let dir= 'C:\\Users\\SA\\Desktop\\NodeTasks\\SQL-Node-Task';
+    
+    const filePath = resolve(dir, 'uploads',`products_${uuid}.csv`);
+
+    // Check if the file exists
+    if (filePath){
+      await fs.access(filePath);
+    }else{
+      return res.status(404).json({ error: 'File not found' });
+    }
+    // Delete the file
+    await fs.unlink(filePath);
+    res.status(200).json({ message: 'File deleted successfully' });
+
+  } catch (error) {
+    console.error('Error deleting file:', error.message);
+    res.status(500).json({ error: 'Internal Server Error - Error deleting file' });
+  }
+}
+
+
+export { getProducts, deleteFile };

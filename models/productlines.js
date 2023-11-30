@@ -1,5 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/connectDB.js";
+
+
  const ProductLine = sequelize.define('ProductLine', {
   productLine: {
     type: DataTypes.STRING(50),

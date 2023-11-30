@@ -11,26 +11,28 @@ import { Office } from '../models/offices.js';
 // Define associations
 
 ProductLine.hasMany(Product, { foreignKey: "productLine" });
-
 Product.belongsTo(ProductLine, { foreignKey: "productLine" });
-Product.hasMany(OrderDetail, { foreignKey: "productCode" });
 
+Product.hasMany(OrderDetail, { foreignKey: "productCode" });
 OrderDetail.belongsTo(Product, { foreignKey: "productCode" });
+
+Order.hasMany(OrderDetail, { foreignKey: "orderNumber" });
 OrderDetail.belongsTo(Order, { foreignKey: "orderNumber" });
 
 Customer.belongsTo(Employee, { foreignKey: "salesRepEmployeeNumber" });
-Customer.hasMany(Payment, { foreignKey: "customerNumber" });
-Customer.hasMany(Order, { foreignKey: "customerNumber" });
-
 Employee.hasMany(Customer, { foreignKey: "salesRepEmployeeNumber", as: 'Customers' });
-Employee.belongsTo(Office, { foreignKey: "officeCode" });
 
-Order.hasMany(OrderDetail, { foreignKey: "orderNumber" });
-Order.hasMany(ProductLine, { foreignKey: 'orderId' });
+Customer.hasMany(Payment, { foreignKey: "customerNumber" });
+Payment.belongsTo(Customer, { foreignKey: "customerNumber" });
+
+Customer.hasMany(Order, { foreignKey: "customerNumber" });
 Order.belongsTo(Customer, { foreignKey: "customerNumber" });
 
+Employee.belongsTo(Office, { foreignKey: "officeCode" });
 Office.hasMany(Employee, { foreignKey: "officeCode" });
-Payment.belongsTo(Customer, { foreignKey: "customerNumber" });
+
+Order.hasMany(ProductLine, { foreignKey: 'orderId' });
+ProductLine.belongsTo(Order, { foreignKey: 'orderId' } )
 
 Order.hasMany(Product, { foreignKey: 'orderNumber' });
 Product.belongsTo(Order, { foreignKey: 'orderNumber' });

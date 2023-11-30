@@ -47,7 +47,6 @@ const Customer = sequelize.define('Customer', {
 }, {
   timestamps: false
 }, {
-  // Additional model options as needed
   tableName: 'customers', 
 });
 

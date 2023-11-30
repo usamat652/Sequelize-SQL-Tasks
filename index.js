@@ -9,7 +9,9 @@ const PORT = 5000;
 syncModels();
 
 app.use('/classicmodel',getProductInfoRouter);
-app.use('/classicmodel', getCustomerInfoRouter)
+app.use('/classicmodel', getCustomerInfoRouter);
+
+
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
