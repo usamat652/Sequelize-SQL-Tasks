@@ -1,9 +1,9 @@
 import express from 'express';
 import { getProducts, deleteFile } from '../controllers/productController.js';
-const getProductInfoRouter = express.Router();
+const productRouter = express.Router();
 
-getProductInfoRouter.get('/downloadProducts',getProducts);
-getProductInfoRouter.delete('/deleteProducts',deleteFile);
+productRouter.get('/downloadProducts/:buyPrice',getProducts);
+productRouter.post('/deleteProducts/:uuid',deleteFile);
 
 
-export default getProductInfoRouter;
+export default productRouter;

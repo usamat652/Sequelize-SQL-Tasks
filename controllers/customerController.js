@@ -6,7 +6,7 @@ import { Order } from '../models/orders.js';
 import { Product } from '../models/products.js';
 import { ProductLine } from '../models/productlines.js';
 import { OrderDetail } from '../models/orderdetails.js';
-// import { Employee } from '../models/employees.js';
+import { Employee } from '../models/employees.js';
 // import { Sequelize } from 'sequelize';
 
 
@@ -14,7 +14,7 @@ import { OrderDetail } from '../models/orderdetails.js';
 const customerDetails = async (req, res) => {
   try {
     const { customerNumber } = req.params;
-    const customerPayments = await Customer.findOne({
+    const customer = await Customer.findOne({
       where: { customerNumber },
       include: [
         {
@@ -42,11 +42,15 @@ const customerDetails = async (req, res) => {
               ]
             }
           ]
+        },
+        {
+          model: Employee,
+          attributes: ['employeeNumber',"firstName", 'lastName']
         }
       ]
     });
 
-    if (!customerPayments) {
+    if (!customer) {
       return res.status(404).send({ message: "Customer not found" });
     }
 
@@ -63,35 +67,46 @@ const customerDetails = async (req, res) => {
     pdfDoc.pipe(res);
     pdfDoc.pipe(pdfStream);
 
-    pdfDoc.fontSize(16).font('Helvetica-Bold').text(`Customer Details - Customer Number: ${customerPayments.customerNumber}`);
+    pdfDoc.fontSize(18).font('Helvetica-Bold').text(`Customer Details - Customer Number: ${customer.customerNumber}`, {align: 'center'});
     pdfDoc.moveDown();
 
-    pdfDoc.fontSize(12).text(`Customer Name: ${customerPayments.customerName}`, { align: 'left' });
-    pdfDoc.text(`Sales Rep Employee Number: ${customerPayments.salesRepEmployeeNumber}`, { align: 'left' });
-    pdfDoc.text(`Credit Limit: ${customerPayments.creditLimit}`, { align: 'left' });
-
+    pdfDoc.fontSize(12).text(`Customer Name: ${customer.customerName}`, { align: 'left' });
+    pdfDoc.text(`Sales Rep Employee Number: ${customer.salesRepEmployeeNumber}`, { align: 'left' });
+    pdfDoc.text(`Credit Limit: ${customer.creditLimit}`, { align: 'left' });
     pdfDoc.moveDown();
 
-    if (customerPayments.Payments && customerPayments.Payments.length > 0) {
-      pdfDoc.fontSize(14).font('Helvetica-Bold').text('Payments:', { align: 'left' });
+
+    if (customer.Employee) {
+      pdfDoc.moveDown();
+      pdfDoc.fontSize(16).font('Helvetica-Bold').text('Employee Details:', { align: 'left' });
+      pdfDoc.moveDown();
+      pdfDoc.fontSize(12).text(`Employee Number: ${customer.Employee.employeeNumber}`, { align: 'left' });
+      pdfDoc.text(`First Name: ${customer.Employee.firstName}`, { align: 'left' });
+      pdfDoc.text(`Last Name: ${customer.Employee.lastName}`, { align: 'left' });
+    }
+    pdfDoc.moveDown();
+
+
+    if (customer.Payments && customer.Payments.length > 0) {
+      pdfDoc.fontSize(16).font('Helvetica-Bold').text('Payments:', { align: 'left' });
       pdfDoc.moveDown();
 
-      customerPayments.Payments.forEach(payment => {
-        pdfDoc.fontSize(10).text(`- Payment Date: ${payment.paymentDate}, Amount: ${payment.amount}`);
+      customer.Payments.forEach(payment => {
+        pdfDoc.fontSize(12).text(`- Payment Date: ${payment.paymentDate}, Amount: ${payment.amount}`);
       });
     } else {
-      pdfDoc.fontSize(10).text('No payments found.');
+      pdfDoc.fontSize(12).text('No payments found.');
     }
 
     pdfDoc.moveDown();
 
-    if (customerPayments.Orders && customerPayments.Orders.length > 0) {
-      pdfDoc.fontSize(12).font('Helvetica-Bold').text('Orders:', { align: 'left' });
+    if (customer.Orders && customer.Orders.length > 0) {
+      pdfDoc.fontSize(16).font('Helvetica-Bold').text('Orders:', { align: 'left' });
       pdfDoc.moveDown();
 
-      customerPayments.Orders.forEach(order => {
-        pdfDoc.fontSize(14).font('Helvetica-Bold').text(`- Order Date: ${order.orderDate}, Shipped Date: ${order.shippedDate}`, { align: 'left' });
-
+      customer.Orders.forEach(order => {
+        pdfDoc.fontSize(14).font('Helvetica-Bold').text(`- Order Date: ${order.orderDate}, Shipped Date: ${order.shippedDate}`, { align: 'cneter' });
+        pdfDoc.moveDown();
         if (order.OrderDetails && order.OrderDetails.length > 0) {
           pdfDoc.fontSize(14).font('Helvetica-Bold').text('  Order Details:', { align: 'left' });
           order.OrderDetails.forEach(orderDetail => {
@@ -135,7 +150,7 @@ export default customerDetails;
   // const customerDetails = async (req, res) => {
   //   try {
   //     const { customerNumber } = req.params;
-  //     const customerPayments = await Customer.findOne({
+  //     const customer = await Customer.findOne({
   //       where: { customerNumber },
   //       include: [
   //         { model: Payment, attributes: ['paymentDate', 'amount'] },

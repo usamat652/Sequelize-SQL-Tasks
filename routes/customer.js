@@ -1,10 +1,14 @@
 import express from "express";
 import customerDetails from "../controllers/customerController.js";
-import mergePDFs from "../controllers/mergeFiles.js";
-const getCustomerInfoRouter = express.Router();
+import {mergePDFs,  upload } from "../controllers/mergeFiles.js";
+import orderDetails from "../controllers/orderController.js";
 
-getCustomerInfoRouter.get('/customerDetails/:customerNumber', customerDetails);
-getCustomerInfoRouter.get('/customers/mergePDF', mergePDFs);
+const customerRouter = express.Router();
 
-export default getCustomerInfoRouter;
+customerRouter.get('/customerDetails/:customerNumber', customerDetails);
+customerRouter.get('/orderDetails/:orderNumber', orderDetails);
+
+customerRouter.post('/merge-pdfs', upload.array('pdfFiles', 10), mergePDFs);
+
+export default customerRouter;
 
