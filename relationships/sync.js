@@ -20,13 +20,13 @@ Order.hasMany(OrderDetail, { foreignKey: "orderNumber" });
 OrderDetail.belongsTo(Order, { foreignKey: "orderNumber" });
 
 Customer.belongsTo(Employee, { foreignKey: "salesRepEmployeeNumber" });
-Employee.hasMany(Customer, { foreignKey: "salesRepEmployeeNumber", as: 'Customers' });
+Employee.hasMany(Customer, { foreignKey: "salesRepEmployeeNumber"});
 
 Customer.hasMany(Payment, { foreignKey: "customerNumber" });
 Payment.belongsTo(Customer, { foreignKey: "customerNumber" });
 
 Customer.hasMany(Order, { foreignKey: "customerNumber" });
-Order.belongsTo(Customer, { foreignKey: "customerNumber" });
+Order.belongsTo(Customer, { foreignKey: "customerNumber"});
 
 Employee.belongsTo(Office, { foreignKey: "officeCode" });
 Office.hasMany(Employee, { foreignKey: "officeCode" });

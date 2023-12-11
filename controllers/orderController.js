@@ -95,7 +95,7 @@ const orderDetails = async (req, res) => {
                 pdfDoc.fontSize(12).text(`     - Quantity Ordered: ${orderDetail.quantityOrdered},\n     - Price Each: ${orderDetail.priceEach}`);
 
                 if (orderDetail.Product) {
-                    pdfDoc.fontSize(12).font('Helvetica-Bold').text(`     - Product: ${orderDetail.Product.productName},\n     - Product Line: ${orderDetail.Product.productLine}`, { align: 'left' });
+                    pdfDoc.fontSize(12).font('Helvetica-Bold').text(`     - Product: ${orderDetail.Product.productName},`, { align: 'left' });
 
                     if (orderDetail.Product.ProductLine) {
                         pdfDoc.fontSize(12).font('Helvetica-Bold').text(`     - Product Line: ${orderDetail.Product.ProductLine.productLine}`, { align: 'left' });
