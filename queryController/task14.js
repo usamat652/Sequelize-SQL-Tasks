@@ -6,7 +6,7 @@ import { FailedApi, SuccessApi } from '../config/apiResponse.js';
 const task14 = async (req, res) => {
     try {
         const result = await ProductLine.findAll({
-            attributes: [ 'productLine'],
+            attributes: ['productLine'],
             include: [
                 {
                     model: Product,
@@ -14,9 +14,9 @@ const task14 = async (req, res) => {
                     required: false
                 },
             ],
-            order: [['productLine'],[Product,'productName']]
+            order: [['productLine'], [Product, 'productName']]
         });
-        
+
         SuccessApi(res, result)
 
     } catch (error) {

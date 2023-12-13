@@ -6,8 +6,16 @@ import { FailedApi, SuccessApi } from '../config/apiResponse.js';
 const task7 = async (req, res) => {
     try {
         const result = await Customer.findAll({
-            attributes: ['city', [sequelize.fn('AVG', sequelize.col('amount')), 'avgPayment']],
-            include: [{ model: Payment, attributes: [] }],
+            attributes: [
+                'city',
+                [sequelize.fn('AVG', sequelize.col('amount')), 'avgPayment']
+            ],
+            include: [
+                {
+                    model: Payment,
+                    attributes: []
+                }
+            ],
             group: ['city'],
             having: sequelize.literal('avgPayment > 1000'),
             order: [[sequelize.literal('avgPayment'), 'DESC']]

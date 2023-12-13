@@ -14,7 +14,6 @@ const task13 = async (req, res) => {
                     required: false,
                 },
             ],
-            logging:console.log()
         });
 
         SuccessApi(res, result)

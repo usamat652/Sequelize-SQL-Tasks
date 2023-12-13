@@ -8,8 +8,8 @@ const task16 = async (req, res) => {
     try {
         const result = await Office.findAll({
             attributes: ['city',
-            [sequelize.fn('COUNT', sequelize.col('employeeNumber')), 'NumberOfEmployees'],
-        ],
+                [sequelize.fn('COUNT', sequelize.col('employeeNumber')), 'NumberOfEmployees'],
+            ],
             include: [
                 {
                     model: Employee,

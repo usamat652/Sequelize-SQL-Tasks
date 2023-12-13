@@ -1,6 +1,6 @@
 import { sequelize } from "../config/connectDB.js";
 import { Customer } from "../models/customers.js";
-import {OrderDetail} from "../models/orderdetails.js";
+import { OrderDetail } from "../models/orderdetails.js";
 import { Order } from "../models/orders.js";
 import { Payment } from "../models/payments.js";
 import { Product } from "../models/products.js";
@@ -18,14 +18,17 @@ const task17 = async (req, res) => {
                 {
                     model: OrderDetail,
                     attributes: [],
+                    required: true,
                     include: [
                         {
                             model: Order,
                             attributes: [],
+                            required: true,
                             include: [
                                 {
                                     model: Customer,
                                     attributes: [],
+                                    required: true,
                                     include: [
                                         {
                                             model: Payment,
@@ -37,7 +40,7 @@ const task17 = async (req, res) => {
                             ]
                         }
                     ],
-                    
+
                 }
             ],
             group: ['productLine'],

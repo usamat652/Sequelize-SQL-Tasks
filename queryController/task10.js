@@ -25,12 +25,12 @@ const task10 = async (req, res) => {
                                 {
                                     model: Customer,
                                     attributes: [],
-                                    
+
                                 }
                             ]
                         }
                     ],
-                    
+
                 }
             ],
             where: sequelize.literal("`country` = 'USA'"),

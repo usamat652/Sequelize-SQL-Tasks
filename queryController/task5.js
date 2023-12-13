@@ -16,7 +16,7 @@ const task5 = async (req, res) => {
                 },
             ],
             where: {
-               employeeNumber: sequelize.literal('salesRepEmployeeNumber is null')
+                employeeNumber: sequelize.literal('salesRepEmployeeNumber is null')
             }
         });
 

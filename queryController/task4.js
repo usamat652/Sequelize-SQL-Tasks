@@ -14,8 +14,8 @@ const task4 = async (req, res) => {
             include: [
                 {
                     model: OrderDetail,
-                    attributes: [],  
-                    required: true,                 
+                    attributes: [],
+                    required: true,
                 },
             ],
             group: ['productName'],

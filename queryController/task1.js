@@ -1,5 +1,5 @@
 import { SuccessApi, FailedApi } from '../config/apiResponse.js';
-import {Product} from '../models/products.js';
+import { Product } from '../models/products.js';
 
 
 const task1 = async (req, res) => {
